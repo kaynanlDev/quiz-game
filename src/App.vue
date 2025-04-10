@@ -1,47 +1,59 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+ <div>
+  <h1>Questões</h1>
+  <input type="radio" name="options">
+  <label>true</label><br>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
+  <input type="radio" name="options">
+  <label>false</label><br>
 
-  <main>
-    <TheWelcome />
-  </main>
+  <button class="send">send</button>
+ </div>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
+<style>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin: 60px auto;
+  max-width: 960px;
+
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+h1 {
+  margin-top: 40px;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+input[type='radio']{
+  margin: 12px 4px;
 }
+
+button.send {
+  margin-top: 12px;
+  height: 40px;
+  min-width: 120px;
+  padding: 0 16px;
+  color: #fff;
+  background-color: #1867c0;
+  border: 1px solid #1867c0;
+  cursor: pointer;
+}
+
+section.score {
+  border-bottom: 1px solid black;
+  padding: 24px;
+  font-size: 18px; 
+}
+
+span {
+    padding: 8px;
+    font-weight: bold;
+    border: 1px solid black;
+  }
 </style>
