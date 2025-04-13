@@ -1,12 +1,14 @@
 <script setup>
 import axios from 'axios';
-import { onMounted } from 'vue';
-  
+import { onMounted, ref } from 'vue';
+
+let questions = ref(null)
 
     onMounted(() =>{
-      axios.get('https://opentdb.com/api.php?amount=1')
+       axios.get('https://opentdb.com/api.php?amount=1')
       .then((response) => {
-      console.log(response.data.results)
+      questions.value = response.data.results[0].question
+      console.log(questions)
       })
     }
     )
@@ -14,7 +16,7 @@ import { onMounted } from 'vue';
 
 <template>
  <div>
-  <h1>Questões</h1>
+  <h1 v-html="questions"></h1>
   <input type="radio" name="options">
   <label>true</label><br>
 
