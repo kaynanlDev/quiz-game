@@ -1,4 +1,15 @@
 <script setup>
+import axios from 'axios';
+import { onMounted } from 'vue';
+  
+
+    onMounted(() =>{
+      axios.get('https://opentdb.com/api.php?amount=1')
+      .then((response) => {
+      console.log(response.data.results)
+      })
+    }
+    )
 </script>
 
 <template>
