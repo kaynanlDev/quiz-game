@@ -2,20 +2,33 @@
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
 
-let questions = ref(null)
+let question = ref(null)
+let incorrectAnswer = ref([]) 
+let correctAnswer = ref(null)
+let allAnswers = ref([])
 
+   function prepareAnswer(){
+      let answers = [...incorrectAnswer.value]
+      answers.splice(Math.floor(Math.random() * (answers.length + 1)), 0, correctAnswer.value)
+      allAnswers.value = answers 
+      console.log(correctAnswer.value)
+    }
     onMounted(() =>{
        axios.get('https://opentdb.com/api.php?amount=1')
       .then((response) => {
-        questions.value = response.data.results[0].question
+        question.value = response.data.results[0].question
+        incorrectAnswer.value = response.data.results[0].incorrect_answers
+        correctAnswer.value = response.data.results[0].correct_answer
+
+        prepareAnswer()
       })
-    }
-    )
+    }, 
+)
 </script>
 
 <template>
  <div>
-  <h1 v-html="questions"></h1>
+  <h1 v-html="question"></h1>
   <input type="radio" name="options">
   <label>true</label><br>
 
