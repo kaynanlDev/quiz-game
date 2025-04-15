@@ -7,8 +7,7 @@ let questions = ref(null)
     onMounted(() =>{
        axios.get('https://opentdb.com/api.php?amount=1')
       .then((response) => {
-      questions.value = response.data.results[0].question
-      console.log(questions)
+        questions.value = response.data.results[0].question
       })
     }
     )
