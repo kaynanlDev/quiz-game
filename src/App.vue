@@ -6,6 +6,7 @@ let question = ref(null)
 let incorrectAnswer = ref([]) 
 let correctAnswer = ref(null)
 let allAnswers = ref([])
+let chosenAnswer = ref(null)
 
    function prepareAnswer(){
       let answers = [...incorrectAnswer.value]
@@ -13,6 +14,19 @@ let allAnswers = ref([])
       allAnswers.value = answers 
       console.log(correctAnswer.value)
     }
+
+    function submitAnswer() {
+      if(!chosenAnswer.value){
+        alert("erro")
+      } else{
+        if(chosenAnswer.value == correctAnswer.value){
+          alert('você acertou')
+        } else{
+          alert('você errou')
+        }
+      }
+    }
+
     onMounted(() =>{
        axios.get('https://opentdb.com/api.php?amount=1')
       .then((response) => {
@@ -29,13 +43,14 @@ let allAnswers = ref([])
 <template>
  <div>
   <h1 v-html="question"></h1>
-  <input type="radio" name="options">
-  <label>true</label><br>
 
-  <input type="radio" name="options">
-  <label>false</label><br>
+  <template v-for="(answer, index) in allAnswers" :key="index">
+    <input type="radio" name="options" :value="answer" v-model="chosenAnswer">
+    <label>{{answer}}</label><br>
+  </template>
 
-  <button class="send">send</button>
+
+  <button class="send" @click="submitAnswer()">send</button>
  </div>
 </template>
 
