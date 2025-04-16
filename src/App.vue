@@ -7,6 +7,9 @@ let incorrectAnswer = ref([])
 let correctAnswer = ref(null)
 let allAnswers = ref([])
 let chosenAnswer = ref(null)
+let showResult = ref(false)
+let btnSend = ref(true)
+let inputDisabled = ref(false)
 
    function prepareAnswer(){
       let answers = [...incorrectAnswer.value]
@@ -17,18 +20,21 @@ let chosenAnswer = ref(null)
 
     function submitAnswer() {
       if(!chosenAnswer.value){
-        alert("erro")
+        console.log("erro")
       } else{
         if(chosenAnswer.value == correctAnswer.value){
-          alert('você acertou')
+          console.log('você acertou')
         } else{
-          alert('você errou')
+          console.log('você errou')
         }
       }
+      showResult.value = true
+      btnSend.value = false
+      inputDisabled.value = true
     }
 
-    onMounted(() =>{
-       axios.get('https://opentdb.com/api.php?amount=1')
+    function getRequest(){
+      axios.get('https://opentdb.com/api.php?amount=1')
       .then((response) => {
         question.value = response.data.results[0].question
         incorrectAnswer.value = response.data.results[0].incorrect_answers
@@ -36,7 +42,24 @@ let chosenAnswer = ref(null)
 
         prepareAnswer()
       })
-    }, 
+    } 
+    function getNewRequest(){
+      axios.get('https://opentdb.com/api.php?amount=1')
+      .then((response) => {
+        question.value = response.data.results[0].question
+        incorrectAnswer.value = response.data.results[0].incorrect_answers
+        correctAnswer.value = response.data.results[0].correct_answer
+
+        prepareAnswer()
+
+        showResult.value = false
+        btnSend.value = true
+        chosenAnswer.value = null
+      })
+    }
+    onMounted(() =>{
+      getRequest()
+    }
 )
 </script>
 
@@ -45,12 +68,18 @@ let chosenAnswer = ref(null)
   <h1 v-html="question"></h1>
 
   <template v-for="(answer, index) in allAnswers" :key="index">
-    <input type="radio" name="options" :value="answer" v-model="chosenAnswer">
+    <input type="radio" name="options" :value="answer" v-model="chosenAnswer" :disabled="chosenAnswer">
     <label>{{answer}}</label><br>
   </template>
 
 
-  <button class="send" @click="submitAnswer()">send</button>
+  <button v-if="btnSend" class="send" @click="submitAnswer()">send</button>
+
+  <section v-show="showResult">
+    <h4 v-if="chosenAnswer == correctAnswer">✅ congratulations! the correct answer is "{{ correctAnswer }}""</h4>
+    <h4 v-else>❌ Oops, incorrect answer. the correct answer is "{{ correctAnswer }}""</h4>
+    <button v-if="submitAnswer" type="button" class="send" @click="getNewRequest()">Next question</button>
+  </section>
  </div>
 </template>
 
