@@ -47,7 +47,7 @@ let scoreAdv = ref(0)
     function getNewRequest(){
       axios.get('https://opentdb.com/api.php?amount=1')
       .then((response) => {
-        qusetion.value = response.data.results[0].question
+        question.value = response.data.results[0].question
         incorrectAnswer.value = response.data.results[0].incorrect_answers
         correctAnswer.value = response.data.results[0].correct_answer
 
