@@ -10,12 +10,13 @@ let chosenAnswer = ref(null)
 let showResult = ref(false)
 let btnSend = ref(true)
 let inputDisabled = ref(false)
+let scorePlayer = ref(0)
+let scoreAdv = ref(0)
 
    function prepareAnswer(){
       let answers = [...incorrectAnswer.value]
       answers.splice(Math.floor(Math.random() * (answers.length + 1)), 0, correctAnswer.value)
       allAnswers.value = answers 
-      console.log(correctAnswer.value)
     }
 
     function submitAnswer() {
@@ -23,9 +24,9 @@ let inputDisabled = ref(false)
         console.log("erro")
       } else{
         if(chosenAnswer.value == correctAnswer.value){
-          console.log('você acertou')
+          scorePlayer.value++
         } else{
-          console.log('você errou')
+          scoreAdv.value++
         }
       }
       showResult.value = true
@@ -46,7 +47,7 @@ let inputDisabled = ref(false)
     function getNewRequest(){
       axios.get('https://opentdb.com/api.php?amount=1')
       .then((response) => {
-        question.value = response.data.results[0].question
+        qusetion.value = response.data.results[0].question
         incorrectAnswer.value = response.data.results[0].incorrect_answers
         correctAnswer.value = response.data.results[0].correct_answer
 
@@ -65,6 +66,10 @@ let inputDisabled = ref(false)
 
 <template>
  <div>
+  <section class="score">
+    <p>Player <span>{{ scorePlayer }}</span> X <span>{{ scoreAdv }}</span> Adversary</p>
+  </section>
+  
   <h1 v-html="question"></h1>
 
   <template v-for="(answer, index) in allAnswers" :key="index">
